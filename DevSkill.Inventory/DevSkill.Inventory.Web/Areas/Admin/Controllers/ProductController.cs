@@ -2,6 +2,7 @@
 using DevSkill.Inventory.Domain.Entities;
 using DevSkill.Inventory.Web.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Web;
 
 namespace DevSkill.Inventory.Web.Areas.Admin.Controllers
 {
@@ -17,6 +18,27 @@ namespace DevSkill.Inventory.Web.Areas.Admin.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        public JsonResult GerProductJsonData(ProductListModel model)
+        {
+            var result = _productManagementServices.GetProducts(model.PageIndex, model.PageSize, model.Search, 
+                model.FormatSortExpression("Title"));
+
+            var productJsonData = new
+            {
+                recordsTotal = result.total,
+                recordsFiltered = result.totalDisplay,
+                data = (from record in result.data
+                        select new string[]
+                        {
+                                HttpUtility.HtmlEncode(record.ProductName),
+                                record.Id.ToString()
+                        }
+                    ).ToArray()
+            };
+
+            return Json(productJsonData);
         }
         
         public IActionResult Create()
