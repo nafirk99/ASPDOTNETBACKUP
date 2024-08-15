@@ -11,6 +11,6 @@ namespace DevSkill.Inventory.Domain.Repsitory_Contracts
     public interface IProductRepository : IRepositoryBase<Product, Guid>
     {
         public (IList<Product> data, int total, int totalDisplay) GetPagedProducts(int pageIndex, int pageSize,
-            DataTablesSearch search, string order);
+            DataTablesSearch search, string? order);
     }
 }

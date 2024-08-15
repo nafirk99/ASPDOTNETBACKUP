@@ -3,6 +3,7 @@ using DevSkill.Inventory.Domain.Entities;
 using DevSkill.Inventory.Web.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Web;
+using DevSkill.Inventory.Infrastructure;
 
 namespace DevSkill.Inventory.Web.Areas.Admin.Controllers
 {
@@ -10,16 +11,19 @@ namespace DevSkill.Inventory.Web.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         private readonly IProductManagementServices _productManagementServices;
+        private readonly ILogger<ProductController> _logger;
 
-        public ProductController(IProductManagementServices productManagementServices)
+        public ProductController(ILogger<ProductController> logger, IProductManagementServices productManagementServices)
         {
             _productManagementServices = productManagementServices;
+            _logger = logger;
         }
         public IActionResult Index()
         {
             return View();
         }
 
+       // [HttpPost]
         public JsonResult GerProductJsonData(ProductListModel model)
         {
             var result = _productManagementServices.GetProducts(model.PageIndex, model.PageSize, model.Search, 
@@ -52,8 +56,27 @@ namespace DevSkill.Inventory.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 var product = new Product { Id = Guid.NewGuid() , ProductName = model.ProductName };
-                _productManagementServices.CreateProduct(product);
-                return RedirectToAction("Index");
+
+                try
+                {
+                    _productManagementServices.CreateProduct(product);
+                    TempData.Put("ResponseMessage", new ResponseModel
+                    {
+                        Message = "Inventory Item created successfuly",
+                        Type = ResponseTypes.Success
+                    });
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    TempData.Put("ResponseMessage", new ResponseModel
+                    {
+                        Message = "Inventory Item creation failed",
+                        Type = ResponseTypes.Success
+                    });
+                    _logger.LogError(ex, "Inventory Item creation failed");
+                }
+                
             }
             return View();
         }

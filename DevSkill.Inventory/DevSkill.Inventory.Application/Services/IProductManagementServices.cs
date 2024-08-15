@@ -8,6 +8,6 @@ namespace DevSkill.Inventory.Application.Services
     {
         void CreateProduct(Product product);
         (IList<Product> data, int total, int totalDisplay) GetProducts(int pageIndex, int pageSize,
-            DataTablesSearch search, string order);
+            DataTablesSearch search, string? order);
     }
 }
