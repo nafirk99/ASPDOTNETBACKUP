@@ -29,22 +29,22 @@
                 processing: true,
                 serverSide: true,
                 responsive: true,
-                lengthChange: false,
+                lengthChange: true,
                 autoWidth: false,
-                // lengthMenu: [
-                //     [10, 25, 50, -1],
-                //     [10, 25, 50, 'All']
-                // ],
+                lengthMenu: [
+                    [10, 25, 50, -1],
+                    [10, 25, 50, 'All']
+                ],
                 ajax: {
                     url: "/Admin/Product/GerProductJsonData",
-                    type: "GET",
+                    type: "POST",
                     contentType: "application/json", //must be added
                     dataType: "json", //better to add, not mandatory
-                    // data: function (d) {
-                    //     d.SearchItem = {
-                    //     };
-                    //     return JSON.stringify(d);
-                    // },
+                    data: function (d) {
+                         d.SearchItem = {
+                         };
+                         return JSON.stringify(d);
+                     },
                 },
                 //dom: 'Bfrtip',
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]

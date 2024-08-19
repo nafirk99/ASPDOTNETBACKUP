@@ -23,11 +23,11 @@ namespace DevSkill.Inventory.Web.Areas.Admin.Controllers
             return View();
         }
 
-       // [HttpPost]
-        public JsonResult GerProductJsonData(ProductListModel model)
+        [HttpPost]
+        public JsonResult GerProductJsonData([FromBody] ProductListModel model)
         {
             var result = _productManagementServices.GetProducts(model.PageIndex, model.PageSize, model.Search, 
-                model.FormatSortExpression("Title"));
+                model.FormatSortExpression("ProductName", "Id"));
 
             var productJsonData = new
             {
