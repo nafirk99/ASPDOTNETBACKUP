@@ -18,14 +18,39 @@ namespace DevSkill.Inventory.Application.Services
 
         public void CreateProduct(Product product)
         {
-           _productUnitOfWork.ProductRepository.Add(product);
+            if (!_productUnitOfWork.ProductRepository.IsTitleDuplicate(product.ProductName))
+            {
+                _productUnitOfWork.ProductRepository.Add(product);
+                _productUnitOfWork.Save();
+            }
+        }
+
+        public void DeleteProduct(Guid id)
+        {
+            _productUnitOfWork.ProductRepository.Remove(id);
             _productUnitOfWork.Save();
+        }
+
+        public Product GetProduct(Guid id)
+        {
+            return _productUnitOfWork.ProductRepository.GetById(id);
         }
 
         public (IList<Product> data, int total, int totalDisplay) GetProducts(int pageIndex,
             int pageSize, DataTablesSearch search, string? order)
         {
            return _productUnitOfWork.ProductRepository.GetPagedProducts(pageIndex, pageSize, search, order);
+        }
+
+        public void UpdateProduct(Product product)
+        {
+            if (!_productUnitOfWork.ProductRepository.IsTitleDuplicate(product.ProductName, product.Id))
+            {
+                _productUnitOfWork.ProductRepository.Edit(product);
+                _productUnitOfWork.Save();
+            }
+            else
+                throw new InvalidOperationException("ProductName Should be unique");
         }
     }
 }

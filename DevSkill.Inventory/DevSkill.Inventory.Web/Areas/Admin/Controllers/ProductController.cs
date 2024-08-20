@@ -47,7 +47,8 @@ namespace DevSkill.Inventory.Web.Areas.Admin.Controllers
         
         public IActionResult Create()
         {
-            return View();
+            var model = new ProductCreateModel();
+            return View(model);
         }
 
         [HttpPost, ValidateAntiForgeryToken]
@@ -77,6 +78,71 @@ namespace DevSkill.Inventory.Web.Areas.Admin.Controllers
                     _logger.LogError(ex, "Inventory Item creation failed");
                 }
                 
+            }
+            return View();
+        }
+        public IActionResult Update(Guid Id)
+        {
+            var model = new ProductUpdateModel();
+            Product product = _productManagementServices.GetProduct(Id);
+            model.ProductName = product.ProductName;
+            model.Id = product.Id;
+
+            return View(model);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult Update(ProductUpdateModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var product = new Product { Id = model.Id, ProductName = model.ProductName };
+
+                try
+                {
+                    _productManagementServices.UpdateProduct(product);
+                    TempData.Put("ResponseMessage", new ResponseModel
+                    {
+                        Message = "Inventory Item Updated successfuly",
+                        Type = ResponseTypes.Success
+                    });
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    TempData.Put("ResponseMessage", new ResponseModel
+                    {
+                        Message = "Inventory Item Update failed",
+                        Type = ResponseTypes.Success
+                    });
+                    _logger.LogError(ex, "Inventory Item Update failed");
+                }
+
+            }
+            return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult Delete(Guid Id)
+        {
+            try
+            {
+                _productManagementServices.DeleteProduct(Id);
+                TempData.Put("ResponseMessage", new ResponseModel
+                {
+                    Message = "Inventory Item Deleted successfuly",
+                    Type = ResponseTypes.Success
+                });
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                TempData.Put("ResponseMessage", new ResponseModel
+                {
+                    Message = "Inventory Item Delete failed",
+                    Type = ResponseTypes.Success
+                });
+                _logger.LogError(ex, "Inventory Item Update failed");
             }
             return View();
         }

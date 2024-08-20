@@ -1,4 +1,4 @@
-﻿@model ProductCreateModel
+﻿@model ProductUpdateModel
 @{
     ViewData["Title"] = "Create";
 }
@@ -8,12 +8,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Create New Product</h1>
+                <h1>Update Product</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">Products</a></li>
-                    <li class="breadcrumb-item active">Create New Product</li>
+                    <li class="breadcrumb-item active">Update  New </li>
                 </ol>
             </div>
         </div>
@@ -29,15 +29,16 @@
                 <!-- general form elements -->
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">Make a Product</h3>
+                        <h3 class="card-title">Update a Product</h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form asp-antiforgery="true" asp-area="Admin" asp-controller="Product" asp-action="Create" method="post">
+                    <form asp-antiforgery="true" asp-area="Admin" asp-controller="Product" asp-action="Update" method="post">
                         <partial name="_ResponsePartial" />
+                        <input type="hidden" asp-for="Id" />
                         <div class="card-body">
                             <div class="form-group">
-                                <label asp-for="ProductName">Product Name</label>
+                                <label asp-for="ProductName" />
                                 <input type="text" asp-for="ProductName" class="form-control">
                             </div>
                         </div>

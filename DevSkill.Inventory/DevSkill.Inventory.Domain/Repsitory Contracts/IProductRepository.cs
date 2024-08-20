@@ -12,5 +12,7 @@ namespace DevSkill.Inventory.Domain.Repsitory_Contracts
     {
         public (IList<Product> data, int total, int totalDisplay) GetPagedProducts(int pageIndex, int pageSize,
             DataTablesSearch search, string? order);
+
+        bool IsTitleDuplicate(string productname, Guid? id = null);
     }
 }
