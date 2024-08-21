@@ -23,6 +23,17 @@ namespace DevSkill.Inventory.Infrastructutre
 
             base.OnConfiguring(optionsBuilder);
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Category>().HasData(new Category 
+            { 
+                Id = new Guid("89BBDCC9-43F5-4ACE-ACFE-9CC4DB28EAD8"),
+                Name = "General" 
+            });
+            base.OnModelCreating(modelBuilder);
+        }
         public DbSet<Product> products { get; set; }
+        public DbSet<Category> Categories { get; set; }
     }
 }

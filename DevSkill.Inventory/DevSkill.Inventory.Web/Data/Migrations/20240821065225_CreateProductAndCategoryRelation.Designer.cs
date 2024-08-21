@@ -4,16 +4,19 @@ using DevSkill.Inventory.Infrastructutre;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace DevSkill.Inventory.Web.Data.Migrations
+namespace DevSkill.Inventory.Web.Migrations.ProductDbCntextMigrations
 {
     [DbContext(typeof(ProductDbCntext))]
-    partial class ProductDbCntextModelSnapshot : ModelSnapshot
+    [Migration("20240821065225_CreateProductAndCategoryRelation")]
+    partial class CreateProductAndCategoryRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,9 +59,6 @@ namespace DevSkill.Inventory.Web.Data.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ProductCreateDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("ProductName")
                         .IsRequired()
