@@ -2,14 +2,14 @@
     ViewData["Title"] = "Products";
 }
 
-@section Styles 
+@section Styles
 {
     <link rel="stylesheet" href="~/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="~/adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="~/adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 }
 
-@section Scripts 
+@section Scripts
 {
     <script src="~/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="~/adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
@@ -36,32 +36,32 @@
                     [10, 25, 50, 'All']
                 ],
                 ajax: {
-                    url: "/Admin/Product/GerProductJsonData",
+                    url: "/Admin/Product/GerProductJsonDataSP",
                     type: "POST",
                     contentType: "application/json", //must be added
                     dataType: "json", //better to add, not mandatory
                     data: function (d) {
-                         d.SearchItem = {
-                         };
-                         return JSON.stringify(d);
-                     },
+                        d.SearchItem = {
+                        };
+                        return JSON.stringify(d);
+                    },
                 },
                 columnDefs: [
                     {
                         orderable: false,
-                        targets: 1,  //It is 0 based index, Here 1 means we are targetting the 2nd column 
+                        targets: 1,  //It is 0 based index, Here 1 means we are targetting the 2nd column
                         render: function (data, type, row) {
                             console.log(type);
                             return `<button type="submit" class="btn btn-info btn-sm" onclick="window.location.href='/admin/product/update/${data}'" value='${data}'>
-                                                        <i class="fas fa-pencil-alt">
-                                                        </i>
-                                                        Edit
-                                                    </button>
-                                                    <button type="submit" class="btn btn-danger btn-sm show-bs-modal" data-id='${data}' value='${data}'>
-                                                        <i class="fas fa-trash">
-                                                        </i>
-                                                        Delete
-                                                    </button>`;
+                                                                <i class="fas fa-pencil-alt">
+                                                                </i>
+                                                                Edit
+                                                            </button>
+                                                            <button type="submit" class="btn btn-danger btn-sm show-bs-modal" data-id='${data}' value='${data}'>
+                                                                <i class="fas fa-trash">
+                                                                </i>
+                                                                Delete
+                                                            </button>`;
                         }
                     }
                 ],
@@ -118,21 +118,15 @@
                         <table id="blogposts" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>Product Name</th>
-                                    <th>Description</th>
-                                    <th>Category</th>
-                                    <th>Product Date</th>
-                                    <th>Action</th>
+                                    <th>Id</th>
+                                    <th>Product</th>
                                 </tr>
                             </thead>
 
                             <tfoot>
                                 <tr>
-                                    <th>Product Name</th>
-                                    <th>Description</th>
-                                    <th>Category</th>
-                                    <th>Product Date</th>
-                                    <th>Action</th>
+                                    <th>Id</th>
+                                    <th>Product</th>
                                 </tr>
                             </tfoot>
                         </table>

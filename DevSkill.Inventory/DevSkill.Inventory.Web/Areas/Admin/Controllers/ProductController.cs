@@ -23,10 +23,40 @@ namespace DevSkill.Inventory.Web.Areas.Admin.Controllers
             return View();
         }
 
+        public IActionResult IndexSP()
+        {
+            return View();
+        }
+
         [HttpPost]
         public JsonResult GerProductJsonData([FromBody] ProductListModel model)
         {
             var result = _productManagementServices.GetProducts(model.PageIndex, model.PageSize, model.Search, 
+                model.FormatSortExpression("ProductName", "Id"));
+
+            var productJsonData = new
+            {
+                recordsTotal = result.total,
+                recordsFiltered = result.totalDisplay,
+                data = (from record in result.data
+                        select new string[]
+                        {
+                                HttpUtility.HtmlEncode(record.ProductName),
+                                HttpUtility.HtmlEncode(record.Description),
+                                HttpUtility.HtmlEncode(record.Category?.Name),
+                                record.ProductCreateDate.ToString(),
+                                record.Id.ToString()
+                        }
+                    ).ToArray()
+            };
+
+            return Json(productJsonData);
+        }
+
+        [HttpPost]   // For SP
+        public async Task<JsonResult> GerProductJsonDataSP([FromBody] ProductListModel model)
+        {
+            var result = await _productManagementServices.GetProductsSP(model.PageIndex, model.PageSize, model.Search,
                 model.FormatSortExpression("ProductName", "Id"));
 
             var productJsonData = new
@@ -44,7 +74,7 @@ namespace DevSkill.Inventory.Web.Areas.Admin.Controllers
 
             return Json(productJsonData);
         }
-        
+
         public IActionResult Create()
         {
             var model = new ProductCreateModel();

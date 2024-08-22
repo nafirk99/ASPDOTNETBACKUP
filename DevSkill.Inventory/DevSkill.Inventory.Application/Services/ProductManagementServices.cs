@@ -42,6 +42,12 @@ namespace DevSkill.Inventory.Application.Services
            return _productUnitOfWork.ProductRepository.GetPagedProducts(pageIndex, pageSize, search, order);
         }
 
+        public async Task<(IList<Product> data, int total, int totalDisplay)> GetProductsSP(int pageIndex,
+            int pageSize, DataTablesSearch search, string? order)
+        {
+            return await _productUnitOfWork.GetPagedProductsUsingSPAsync(pageIndex, pageSize, search, order);
+        }
+
         public void UpdateProduct(Product product)
         {
             if (!_productUnitOfWork.ProductRepository.IsTitleDuplicate(product.ProductName, product.Id))
